@@ -1,0 +1,112 @@
+table 'Nig Economy GFD'
+	lineageTag: 2fe8adf6-eaf6-4f65-bfae-a294f997e2c4
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: a3fbf133-7917-4536-9f56-93a938580864
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Inflation rate'
+		dataType: double
+		lineageTag: 6e68aa72-272f-4c89-9d11-5ba1ce4c62c2
+		summarizeBy: sum
+		sourceColumn: Inflation rate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Unemployment
+		dataType: double
+		lineageTag: 0035d3c4-3cf3-4ce4-80d1-d1682f7cb145
+		summarizeBy: sum
+		sourceColumn: Unemployment
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Government debt'
+		dataType: double
+		lineageTag: 53204351-a3ed-4283-b994-4b8d5976367a
+		summarizeBy: sum
+		sourceColumn: Government debt
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Agriculture
+		dataType: string
+		lineageTag: a600dce1-0310-4e24-8bc5-28bb7c568181
+		summarizeBy: none
+		sourceColumn: Agriculture
+
+		annotation SummarizationSetBy = Automatic
+
+	column Industry
+		dataType: string
+		lineageTag: 81277670-1fbd-4866-b722-f52572d6deb0
+		summarizeBy: none
+		sourceColumn: Industry
+
+		annotation SummarizationSetBy = Automatic
+
+	column Services
+		dataType: string
+		lineageTag: 983258c5-909e-4356-94fb-40e5846562a1
+		summarizeBy: none
+		sourceColumn: Services
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'GDP at 2010 Constant Basic Prices'
+		dataType: string
+		lineageTag: 0a741e99-1145-4dce-9459-aeccee1cff33
+		summarizeBy: none
+		sourceColumn: GDP at 2010 Constant Basic Prices
+
+		annotation SummarizationSetBy = Automatic
+
+	column NetTaxesOnProducts
+		dataType: string
+		lineageTag: a5a49c3a-b909-4e78-b3ea-262627f8d1ea
+		summarizeBy: none
+		sourceColumn: NetTaxesOnProducts
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'GDP at 2010 Constant Market Prices'
+		dataType: string
+		lineageTag: 5becf419-d8ca-4ade-bbdb-25ce11f8e080
+		summarizeBy: none
+		sourceColumn: GDP at 2010 Constant Market Prices
+
+		annotation SummarizationSetBy = Automatic
+
+	column President
+		dataType: string
+		lineageTag: b3f5088f-5b16-42a4-8162-6ff369a35749
+		summarizeBy: none
+		sourceColumn: President
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Nig Economy GFD' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\HP\Desktop\GFD 2025 File\GFD\Nig Economy GFD.csv"),[Delimiter=",", Columns=11, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Year", Int64.Type}, {"Inflation rate", Percentage.Type}, {"Unemployment", Percentage.Type}, {"Government debt", Percentage.Type}, {"Agriculture", type text}, {"Industry", type text}, {"Services", type text}, {"GDP at 2010 Constant Basic Prices", type text}, {"NetTaxesOnProducts", type text}, {"GDP at 2010 Constant Market Prices", type text}, {"President", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
